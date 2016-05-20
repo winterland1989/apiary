@@ -88,7 +88,7 @@ library
                        Control.Monad.Apiary.Filter.Internal
                        Control.Monad.Apiary.Action.Internal
                        Control.Monad.Apiary.Filter.Internal.Capture.TH
-  build-depends:       base                 >=4.6   && <4.9
+  build-depends:       base                 >=4.6   && <5.0
                      , template-haskell     >=2.8   && <2.11
 
                      , transformers         >=0.2   && <0.5
@@ -135,7 +135,7 @@ test-suite tasty
   other-modules:       Application
                      , Method
   type:                exitcode-stdio-1.0
-  build-depends:       base                      >=4.6   && <4.9
+  build-depends:       base                      >=4.6   && <5.0
                      , mtl                       >=2.1   && <2.3
                      , tasty                     >=0.10  && <0.12
                      , tasty-hunit               >=0.9   && <0.10
