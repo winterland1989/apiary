@@ -18,13 +18,13 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Web.Apiary.Cookie
-  build-depends:       base               >=4.6  && <4.9
+  build-depends:       base               >=4.6  && <5.0
                      , apiary             >=1.4  && <3.0
                      , wai                >=3.0  && <3.3
 
                      , bytestring         >=0.10 && <0.11
                      , cookie             >=0.4  && <0.5
-                     , time               >=1.4  && <1.6
+                     , time               >=1.4  && <1.7
                      , blaze-builder      >=0.3  && <0.5
                      , blaze-html         >=0.7  && <0.9
                      , web-routing
