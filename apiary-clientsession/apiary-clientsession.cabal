@@ -22,7 +22,7 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Web.Apiary.Session.ClientSession
-  build-depends:       base               >=4.6   && <4.9
+  build-depends:       base               >=4.6   && <5.0
                      , apiary             >=1.2   && <3.0
                      , apiary-cookie      >=1.2   && <1.5
                      , apiary-session     >=1.2   && <1.5
@@ -31,9 +31,9 @@ library
                      , vault              >=0.3   && <0.4
                      , cereal             >=0.4   && <0.6
                      , bytestring         >=0.10  && <0.11
-                     , time               >=1.4   && <1.6
+                     , time               >=1.4   && <1.7
                      , unix-compat        >=0.4   && <0.5
-                     , data-default-class >=0.0   && <0.1
+                     , data-default-class >=0.0   && <0.2
 
   hs-source-dirs:      src
   ghc-options:         -O2 -Wall
