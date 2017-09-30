@@ -122,7 +122,7 @@ import qualified Network.Wai as Wai
 import qualified Network.Wai.Parse as P
 import Network.Wai.Request (requestSizeCheck, RequestSizeException(..))
 
-import qualified Network.Routing.Dict as Dict
+import qualified Data.Apiary.Routing.Dict as Dict
 import Data.Apiary.Param(Param, File(..))
 import Data.Apiary.SProxy(SProxy(..))
 import Data.Apiary.Document(Documents)

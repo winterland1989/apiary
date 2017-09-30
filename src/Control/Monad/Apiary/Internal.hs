@@ -55,7 +55,7 @@ import Control.Monad.Apiary.Action.Internal
     , execActionT, hoistActionT, applyDict, rootPattern
     )
 
-import qualified Network.Routing as R
+import qualified Data.Apiary.Routing as R
 import Data.Apiary.Method(Method, renderMethod)
 import Data.Apiary.Extension ( Has, MonadExts(..), getExt, noExtension )
 import Data.Apiary.Extension.Internal(Initializer(..), allMiddleware, allMiddleware')

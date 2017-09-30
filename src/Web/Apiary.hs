@@ -12,7 +12,7 @@ module Web.Apiary
     -- | Has, MonadHas, Extensions, Initializer, Initializer', (+>), noExtension
     , module Data.Apiary.Extension
     -- | Member, Members, NotMember, Elem((:=))
-    , module Network.Routing.Dict
+    , module Data.Apiary.Routing.Dict
     , key
 
     -- | hiding mkStatus
@@ -98,7 +98,7 @@ import Data.Apiary.Param
 
 import Data.Apiary.Method(Method(..))
 import Data.Apiary.Extension(Has, MonadExts(..), getExt, Extensions, Initializer, Initializer', (+>), noExtension)
-import Network.Routing.Dict (Members, type (</), KV((:=)))
+import Data.Apiary.Routing.Dict (Members, type (</), KV((:=)))
 
 import Network.HTTP.Types.Status hiding (mkStatus)
 import Data.Default.Class(def)

@@ -1,5 +1,5 @@
 name:                apiary
-version:             2.0.2
+version:             2.1.0
 synopsis:            Simple and type safe web framework that generate web API documentation.
 description:
   Simple and type safe web framework that can be automatically generate API documentation.
@@ -47,7 +47,7 @@ description:
 license:             MIT
 license-file:        LICENSE
 author:              HirotomoMoriwaki<philopon.dependence@gmail.com>
-maintainer:          HirotomoMoriwaki<philopon.dependence@gmail.com>
+maintainer:          HirotomoMoriwaki<philopon.dependence@gmail.com>, 韩冬<drkoster@qq.com>
 Homepage:            https://github.com/philopon/apiary
 Bug-reports:         https://github.com/philopon/apiary/issues
 copyright:           (c) 2014-2015 Hirotomo Moriwaki
@@ -84,26 +84,31 @@ library
                        Data.Apiary.SProxy
                        Data.Apiary.Document.Internal
                        Data.Apiary.Extension.Internal
+                       Data.Apiary.Routing
+                       Data.Apiary.Routing.Dict
+                       Data.Apiary.Routing.Dict.Internal
                        Control.Monad.Apiary.Internal
                        Control.Monad.Apiary.Filter.Internal
                        Control.Monad.Apiary.Action.Internal
                        Control.Monad.Apiary.Filter.Internal.Capture.TH
-  build-depends:       base                 >=4.6   && <5.0
-                     , template-haskell     >=2.8   && <2.11
+  build-depends:       base                 >=4.8   && <5.0
+                     , template-haskell     >=2.8   && <2.13
 
-                     , transformers         >=0.2   && <0.5
-                     , transformers-base    >=0.4   && <0.5
+                     , transformers         >=0.2   && <0.6
+                     , transformers-base    >=0.4   && <0.6
                      , mtl                  >=2.1   && <2.3
                      , monad-control        >=0.3   && <1.1
                      , exceptions           >=0.6   && <0.9
                      , resourcet            >=0.4.6 && <1.2
+
+                     , ghc-prim
+                     , primitive
 
                      , http-types           >=0.8   && <0.10
                      , mime-types           >=0.1   && <0.2
 
                      , text                 >=1.1   && <1.3
                      , bytestring           >=0.10  && <0.11
-                     , bytestring-read      >=0.2   && <0.4
                      , blaze-builder        >=0.3   && <0.5
                      , blaze-html           >=0.7   && <0.9
                      , blaze-markup         >=0.6   && <0.8
@@ -115,15 +120,15 @@ library
                      , unordered-containers >=0.2   && <0.3
                      , hashable             >=1.1   && <1.3
                      , time                 >=1.4   && <1.6
-                     , process              >=1.2   && <1.3
+                     , process              >=1.2   && <2.0
                      , unix-compat          >=0.4   && <0.5
                      , http-date            >=0.0   && <0.1
 
                      , wai                  >=3.0   && <3.3
                      , wai-extra            >=3.0.15 && <3.1
                      , stringsearch         >=0.3   && <0.4
-                     , web-routing          >=0.6   && <0.7
-                     , types-compat         >=0.1   && <0.2
+                     , bytestring-lexing    >=0.5   && <0.6
+                     , hetero-dict          >=0.1.1 && <0.1.2
 
   hs-source-dirs:      src
   ghc-options:         -O2 -Wall

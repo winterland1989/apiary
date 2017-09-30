@@ -16,10 +16,10 @@ import Control.Monad(mzero)
 import Control.Monad.Apiary.Internal(Filter, Filter', focus)
 import Control.Monad.Apiary.Action(getRequest)
 
-import GHC.TypeLits.Compat(KnownSymbol)
-import Network.Routing.Dict(type (</), KV((:=)), Store)
-import qualified Network.Routing.Dict as Dict
-import qualified Network.Routing as R
+import GHC.TypeLits(KnownSymbol)
+import Data.Apiary.Routing.Dict(type (</), KV((:=)), Store)
+import qualified Data.Apiary.Routing.Dict as Dict
+import qualified Data.Apiary.Routing as R
 import Data.Apiary.Document.Internal(Doc(..))
 
 -- | low level filter function.
@@ -38,6 +38,6 @@ function' :: (KnownSymbol key, Monad actM, key </ prms) => (Doc -> Doc) -> (Wai.
 function' d f = function d $ \c r -> f r >>= \(k, p) -> return $ Dict.add k p c
 
 -- | filter only(not modify arguments).
-function_ :: Monad actM => (Doc -> Doc) -> (Wai.Request -> Bool) 
+function_ :: Monad actM => (Doc -> Doc) -> (Wai.Request -> Bool)
           -> Filter' exts actM m
 function_ d f = function d $ \c r -> if f r then Just c else Nothing

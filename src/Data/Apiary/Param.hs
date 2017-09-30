@@ -62,12 +62,11 @@ import Data.Word(Word8, Word16, Word32, Word64)
 import Data.Word(Word, Word8, Word16, Word32, Word64)
 #endif
 import Data.Maybe(isJust, catMaybes)
-import Network.Routing.Dict(KV((:=)), type (</), Store)
-import qualified Network.Routing.Dict as Dict
-import Data.Typeable.Compat
-    ( Typeable, mkTyConApp, typeRepTyCon, typeOf, TypeRep, typeRep, Proxy(..))
+import Data.Apiary.Routing.Dict(KV((:=)), type (</), Store)
+import qualified Data.Apiary.Routing.Dict as Dict
+import Data.Typeable
 
-import GHC.TypeLits.Compat(Symbol, KnownSymbol)
+import GHC.TypeLits(Symbol, KnownSymbol)
 
 import Data.String(IsString)
 import Data.Time.Calendar(Day, fromGregorian)
@@ -81,7 +80,8 @@ import qualified Data.Text.Lazy.Encoding as TL
 import qualified Data.ByteString.Char8 as S
 import qualified Data.ByteString.Lazy.Char8 as L
 
-import qualified Data.ByteString.Read as SL
+import qualified Data.ByteString.Lex.Integral as BSL
+import qualified Data.ByteString.Lex.Fractional as BSF
 
 jsToBool :: (IsString a, Eq a) => a -> Bool
 jsToBool = flip notElem jsFalse
@@ -172,15 +172,14 @@ instance Path String       where readPath = Just . T.unpack;      pathRep _ = ty
 
 --------------------------------------------------------------------------------
 
-class Query a where
+class Typeable a => Query a where
     -- | read query parameter.
     readQuery :: Maybe S.ByteString -- ^ value of query parameter. Nothing is key only parameter.
               -> Maybe a -- ^ Noting is fail.
 
     -- | pretty query parameter.
     queryRep  :: proxy a            -> QueryRep
-    queryRep = Strict . qTypeRep
-    qTypeRep  :: proxy a            -> TypeRep
+    queryRep = Strict . typeRep
 
 readBS :: (S.ByteString -> Maybe (a, S.ByteString))
        -> S.ByteString -> Maybe a
@@ -189,56 +188,50 @@ readBS p b = case p b of
     _           -> Nothing
 
 readBSInt :: Integral a => S.ByteString -> Maybe a
-readBSInt = readBS (SL.signed SL.integral)
+readBSInt = readBS (BSL.readSigned BSL.readDecimal)
 
 readBSWord :: Integral a => S.ByteString -> Maybe a
-readBSWord = readBS SL.integral
+readBSWord = readBS BSL.readDecimal
 
 readBSDouble :: S.ByteString -> Maybe Double
-readBSDouble = readBS (SL.signed SL.double)
+readBSDouble = readBS (BSF.readSigned BSF.readDecimal)
 
 -- | javascript boolean.
 -- when \"false\", \"0\", \"-0\", \"\", \"null\", \"undefined\", \"NaN\" then False, else True. since 0.6.0.0.
 instance Query Bool    where
     readQuery (Just b) = Just $ jsToBool b
     readQuery Nothing  = Just True
-    qTypeRep = typeRep
 
-instance Query Int     where readQuery = maybe Nothing readBSInt; qTypeRep = typeRep
-instance Query Int8    where readQuery = maybe Nothing readBSInt; qTypeRep = typeRep
-instance Query Int16   where readQuery = maybe Nothing readBSInt; qTypeRep = typeRep
-instance Query Int32   where readQuery = maybe Nothing readBSInt; qTypeRep = typeRep
-instance Query Int64   where readQuery = maybe Nothing readBSInt; qTypeRep = typeRep
-instance Query Integer where readQuery = maybe Nothing readBSInt; qTypeRep = typeRep
+instance Query Int     where readQuery = maybe Nothing readBSInt
+instance Query Int8    where readQuery = maybe Nothing readBSInt
+instance Query Int16   where readQuery = maybe Nothing readBSInt
+instance Query Int32   where readQuery = maybe Nothing readBSInt
+instance Query Int64   where readQuery = maybe Nothing readBSInt
+instance Query Integer where readQuery = maybe Nothing readBSInt
 
-instance Query Word    where readQuery = maybe Nothing readBSWord; qTypeRep = typeRep
-instance Query Word8   where readQuery = maybe Nothing readBSWord; qTypeRep = typeRep
-instance Query Word16  where readQuery = maybe Nothing readBSWord; qTypeRep = typeRep
-instance Query Word32  where readQuery = maybe Nothing readBSWord; qTypeRep = typeRep
-instance Query Word64  where readQuery = maybe Nothing readBSWord; qTypeRep = typeRep
+instance Query Word    where readQuery = maybe Nothing readBSWord
+instance Query Word8   where readQuery = maybe Nothing readBSWord
+instance Query Word16  where readQuery = maybe Nothing readBSWord
+instance Query Word32  where readQuery = maybe Nothing readBSWord
+instance Query Word64  where readQuery = maybe Nothing readBSWord
 
-instance Query Double  where readQuery = maybe Nothing readBSDouble; qTypeRep = typeRep
-instance Query Float   where readQuery = maybe Nothing (fmap realToFrac . readBSDouble); qTypeRep = typeRep
+instance Query Double  where readQuery = maybe Nothing readBSDouble
+instance Query Float   where readQuery = maybe Nothing (fmap realToFrac . readBSDouble)
 
 instance Query T.Text where
     readQuery  = fmap $ T.decodeUtf8With lenientDecode
-    qTypeRep _ = typeRep (Proxy :: Proxy Text)
 
 instance Query TL.Text where
     readQuery  = fmap (TL.decodeUtf8With lenientDecode . L.fromStrict)
-    qTypeRep _ = typeRep (Proxy :: Proxy Text)
 
 instance Query S.ByteString where
     readQuery  = id
-    qTypeRep _ = typeRep (Proxy :: Proxy Text)
 
 instance Query L.ByteString where
     readQuery  = fmap L.fromStrict
-    qTypeRep _ = typeRep (Proxy :: Proxy Text)
 
 instance Query String where
     readQuery  = fmap S.unpack
-    qTypeRep _ = typeRep (Proxy :: Proxy Text)
 
 -- | fuzzy date parse. three decimal split by 1 char.
 -- if year < 100 then + 2000. since 0.16.0.
@@ -250,15 +243,14 @@ instance Query String where
 -- * 14.2.05
 instance Query Day where
     readQuery = (>>= \s0 -> do
-        (y, s1) <- SL.integral s0
+        (y, s1) <- BSL.readDecimal s0
         when (S.null s1) Nothing
-        (m, s2) <- SL.integral $ S.tail s1
+        (m, s2) <- BSL.readDecimal $ S.tail s1
         when (S.null s2) Nothing
-        (d, s3) <- SL.integral $ S.tail s2
+        (d, s3) <- BSL.readDecimal $ S.tail s2
         unless (S.null s3) Nothing
         let y' = if y < 100 then 2000 + y else y
         return $ fromGregorian y' m d)
-    qTypeRep _ = typeRep (Proxy :: Proxy Day)
 
 -- | fuzzy date parse. three decimal split by 1 char.
 -- if year < 100 then + 2000. since 0.16.0.
@@ -284,15 +276,12 @@ instance Path Day where
 instance Query a => Query (Maybe a) where
     readQuery (Just a) = Just `fmap` readQuery (Just a)
     readQuery Nothing  = Just Nothing
-    queryRep _         = Nullable $ qTypeRep (Proxy :: Proxy a)
-    qTypeRep _         = maybeCon `mkTyConApp` [qTypeRep (Proxy :: Proxy a)]
-      where maybeCon = typeRepTyCon $ typeOf (Nothing :: Maybe ())
+    queryRep _         = Nullable $ typeRep (Proxy :: Proxy a)
 
 -- | always success. for check existence.
 instance Query () where
     readQuery _ = Just ()
     queryRep  _ = Check
-    qTypeRep  _ = typeOf ()
 
 pBool :: Proxy Bool
 pBool = Proxy

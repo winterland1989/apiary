@@ -16,7 +16,7 @@ import qualified Data.Text as T
 import Data.String(IsString(..))
 import Data.List(isInfixOf)
 import Data.Apiary.SProxy(SProxy(..))
-import Data.Proxy.Compat(Proxy(..))
+import Data.Proxy(Proxy(..))
 
 preCap :: String -> [String]
 preCap ""  = []
@@ -41,7 +41,7 @@ description s = case break (`elem` ("([" :: String)) s of
         (_:'$':b, "]") -> TH.lookupValueName b >>=
             maybe (fail $ b ++ " not found.") (\n -> return (t, [|Just $(TH.varE n)|]))
         (_:b,     "]") -> return (t, [|Just $(TH.stringE b)|])
-        (_, _)         -> fail "capture: syntax error." 
+        (_, _)         -> fail "capture: syntax error."
 
 mkCap :: [String] -> TH.ExpQ
 mkCap [] = [|id|]
@@ -67,7 +67,7 @@ mkCap (str:as)
 -- [capture|\/path|] -- first path == "path"
 -- [capture|\/int\/foo::Int|] -- first path == "int" && get 2nd path as Int.
 -- [capture|\/bar::Int\/baz::Double|] -- get first path as Int and get 2nd path as Double.
--- [capture|/**baz|] -- feed greedy and get all path as [Text] (since 0.17.0). 
+-- [capture|/**baz|] -- feed greedy and get all path as [Text] (since 0.17.0).
 -- @
 --
 -- this QQ can convert pure function easily.
@@ -78,7 +78,7 @@ mkCap (str:as)
 -- @
 --
 capture :: QuasiQuoter
-capture = QuasiQuoter 
+capture = QuasiQuoter
     { quoteExp = mkCap . preCap
     , quotePat  = \_ -> error "No quotePat."
     , quoteType = \_ -> error "No quoteType."

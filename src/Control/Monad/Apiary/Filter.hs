@@ -66,12 +66,12 @@ import qualified Data.ByteString.Char8 as SC
 import qualified Data.Text             as T
 import qualified Data.CaseInsensitive  as CI
 import Data.Monoid((<>))
-import Data.Proxy.Compat(Proxy(..))
-import GHC.TypeLits.Compat(KnownSymbol, Symbol, symbolVal)
+import Data.Proxy(Proxy(..))
+import GHC.TypeLits(KnownSymbol, Symbol, symbolVal)
 import Data.Apiary.SProxy(SProxy(..))
-import Network.Routing.Dict(type (</), KV((:=)))
-import qualified Network.Routing.Dict as Dict
-import qualified Network.Routing as R
+import Data.Apiary.Routing.Dict(type (</), KV((:=)))
+import qualified Data.Apiary.Routing.Dict as Dict
+import qualified Data.Apiary.Routing as R
 
 import Data.Apiary.Param
     ( ReqParam, StrategyRep(..), QueryRep(NoValue)

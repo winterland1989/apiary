@@ -15,12 +15,12 @@ import Control.Monad.Apiary.Internal (Filter, Filter', focus)
 import Control.Monad.Apiary.Filter.Internal
     (Doc(DocPath, DocFetch, DocAny, DocRest))
 
-import GHC.TypeLits.Compat(KnownSymbol, symbolVal)
-import Data.Proxy.Compat(Proxy(..))
+import GHC.TypeLits(KnownSymbol, symbolVal)
+import Data.Proxy(Proxy(..))
 import Data.Apiary.Param(Path, pathRep, readPathAs)
-import Network.Routing.Dict(KV((:=)))
-import qualified Network.Routing.Dict as Dict
-import qualified Network.Routing as R
+import Data.Apiary.Routing.Dict(KV((:=)))
+import qualified Data.Apiary.Routing.Dict as Dict
+import qualified Data.Apiary.Routing as R
 
 import qualified Data.Text as T
 import Text.Blaze.Html(Html)

@@ -1,3 +1,7 @@
+# 2.1.0
+* GHC 8.0/8.2 compatible
+* merge web-routing modules, `Network.Routing.XXX` changed to `Data.Apiary.Routing.XXX`.
+
 # 2.0.2
 * add json to send ToJson instances with auto 'application/json' content type.
 
