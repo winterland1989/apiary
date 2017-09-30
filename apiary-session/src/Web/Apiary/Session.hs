@@ -23,10 +23,10 @@ import Web.Apiary.Session.Internal
     (Session(Session), backendGet, backendSet, backendDelete)
 
 import Data.Apiary.Extension(Has, getExt)
-import Data.Proxy.Compat(Proxy(..))
-import GHC.TypeLits.Compat(KnownSymbol)
-import qualified Network.Routing.Dict as Dict
-import qualified Network.Routing as R
+import Data.Proxy(Proxy(..))
+import GHC.TypeLits(KnownSymbol)
+import qualified Data.Apiary.Routing.Dict as Dict
+import qualified Data.Apiary.Routing as R
 
 -- | get session provided type.
 getSession :: (Has (Session sess m) exts, Monad m) => proxy sess -> ActionT exts prms m (Maybe sess)

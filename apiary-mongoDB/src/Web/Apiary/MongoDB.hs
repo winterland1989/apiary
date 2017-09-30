@@ -30,7 +30,7 @@ import Web.Apiary.Heroku(Heroku, getHerokuEnv')
 
 import qualified Database.MongoDB as MongoDB
 
-import Data.Proxy.Compat(Proxy(..))
+import Data.Proxy(Proxy(..))
 import Data.Apiary.Extension
      (Has, Initializer', initializerBracket'
      , Initializer, initializerBracket
@@ -85,13 +85,13 @@ getMongoDBConfig s0 cfg =
         (host_,  s4) = first T.unpack $ T.break (== ':') (T.tail s3)
         (port,   s5) = T.break (== '/') (T.tail s4)
         db = if T.null s5 then "" else T.tail s5
-    in cfg { mongoDBHost     = either (const $ host host_) (Host host_ . PortNumber . fst) (T.decimal port) 
+    in cfg { mongoDBHost     = either (const $ host host_) (Host host_ . PortNumber . fst) (T.decimal port)
            , mongoDBAuth     = Just (user, passwd)
            , mongoDBDatabase = db
            }
 
 -- | initialize MongoDB extension using heroku service.
--- 
+--
 -- compatible:
 --
 -- * MongoHQ

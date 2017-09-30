@@ -27,10 +27,10 @@ import Web.Apiary(MonadIO(..))
 import Web.Apiary.Session(Session, deleteSession, setSession)
 
 import Data.Apiary.Extension(Has, Extension)
-import Data.Proxy.Compat(Proxy(..))
+import Data.Proxy(Proxy(..))
 import Data.Typeable(Typeable)
 import Data.Apiary.Method(Method(GET))
-import qualified Network.Routing as R
+import qualified Data.Apiary.Routing as R
 
 import qualified Data.Serialize as Serialize
 import Data.Data (Data)
@@ -61,7 +61,7 @@ data Provider = Provider
     }
 
 instance Default AuthConfig where
-    def = AuthConfig "/" "http://localhost:3000" ["auth"] ["return_to"] ["logout"] $ 
+    def = AuthConfig "/" "http://localhost:3000" ["auth"] ["return_to"] ["logout"] $
         [ ("google", Provider "https://www.google.com/accounts/o8/id" Nothing [])
         , ("yahoo",  Provider "http://me.yahoo.com/"                  Nothing [])
         ]
@@ -131,7 +131,7 @@ instance Serialize.Serialize (OpenId_ T.Text) where
 type OpenId = OpenId_ T.Text
 
 toOpenId :: OpenId.OpenIdResponse -> OpenId
-toOpenId r = OpenId_ 
+toOpenId r = OpenId_
     (OpenId.identifier $ OpenId.oirOpLocal r)
     (OpenId.oirParams r)
     (OpenId.identifier <$> OpenId.oirClaimed r)

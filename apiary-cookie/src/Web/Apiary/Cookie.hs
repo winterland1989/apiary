@@ -4,7 +4,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Web.Apiary.Cookie 
+module Web.Apiary.Cookie
     ( -- * setter
       setCookie
     , deleteCookie
@@ -20,7 +20,7 @@ module Web.Apiary.Cookie
 
 import Control.Applicative((<$>))
 
-import Network.Routing.Dict(type (</))
+import Data.Apiary.Routing.Dict(type (</))
 import qualified Network.Wai as Wai
 
 import Web.Cookie (SetCookie(..))
@@ -29,7 +29,7 @@ import qualified Web.Cookie as Cookie
 import Control.Monad.Apiary.Action(ActionT, getHeaders, addHeader)
 import Control.Monad.Apiary.Filter
 
-import GHC.TypeLits.Compat(KnownSymbol, symbolVal)
+import GHC.TypeLits(KnownSymbol, symbolVal)
 import Data.Apiary.Param(Strategy(..))
 
 import Data.Maybe(mapMaybe)
@@ -64,7 +64,7 @@ cookie k p = function (DocPrecondition $ toHtml (symbolVal k) <> " cookie requir
     strategy p k (map (Just . snd) . filter ((SC.pack (symbolVal k) ==) . fst) $ cookie' r) l
 
 cookie' :: Wai.Request -> [(S.ByteString, S.ByteString)]
-cookie' = 
+cookie' =
     concatMap Cookie.parseCookies .
     mapMaybe (cond (("cookie" ==) . fst) (Just . snd) (const Nothing)) .
     Wai.requestHeaders
@@ -78,7 +78,7 @@ getCookies =
 -- | delete cookie. since 0.6.1.0.
 deleteCookie :: Monad m => S.ByteString -> ActionT exts prms m ()
 deleteCookie k = setCookie Cookie.def
-    { setCookieName    = k 
+    { setCookieName    = k
     , setCookieExpires = Just $ UTCTime (ModifiedJulianDay 0) 0
     , setCookieMaxAge  = Just 0
     }

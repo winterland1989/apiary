@@ -80,12 +80,13 @@ library
                        Data.Apiary.Document
                        Data.Apiary.Document.Html
 
+                       Data.Apiary.Routing
+                       Data.Apiary.Routing.Dict
+
   other-modules:       Web.Apiary.TH
                        Data.Apiary.SProxy
                        Data.Apiary.Document.Internal
                        Data.Apiary.Extension.Internal
-                       Data.Apiary.Routing
-                       Data.Apiary.Routing.Dict
                        Data.Apiary.Routing.Dict.Internal
                        Control.Monad.Apiary.Internal
                        Control.Monad.Apiary.Filter.Internal

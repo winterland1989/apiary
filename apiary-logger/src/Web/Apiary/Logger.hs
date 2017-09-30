@@ -37,7 +37,7 @@ import Control.Exception.Lifted(bracket)
 
 import Data.Default.Class(Default(..))
 
-import Data.Proxy.Compat(Proxy(..))
+import Data.Proxy(Proxy(..))
 import Data.Apiary.Extension
      ( Has, Initializer', initializerBracket'
      , Extensions, Extension, MonadExts(getExts), getExt
@@ -65,11 +65,11 @@ data Logger = Logger
 instance Extension Logger
 
 newLogger :: FL.BufSize -> LogDest -> IO Logger
-newLogger s (LogFile p) = FL.newFileLoggerSet s p >>= \l -> 
+newLogger s (LogFile p) = FL.newFileLoggerSet s p >>= \l ->
     return $ Logger (FL.pushLogStr l) (FL.flushLogStr l)
-newLogger s LogStdout = FL.newStdoutLoggerSet s >>= \l -> 
+newLogger s LogStdout = FL.newStdoutLoggerSet s >>= \l ->
     return $ Logger (FL.pushLogStr l) (FL.flushLogStr l)
-newLogger s LogStderr = FL.newStderrLoggerSet s >>= \l -> 
+newLogger s LogStderr = FL.newStderrLoggerSet s >>= \l ->
     return $ Logger (FL.pushLogStr l) (FL.flushLogStr l)
 newLogger _ NoLog = return $ Logger (\_ -> return ()) (return ())
 

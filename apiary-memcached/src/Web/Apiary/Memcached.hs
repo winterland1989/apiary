@@ -30,7 +30,7 @@ import Data.Apiary.Extension
     (Has, Extension, Initializer', initializerBracket'
     , Initializer, initializerBracket, getExtension, getExt
     )
-import Data.Proxy.Compat(Proxy(..))
+import Data.Proxy(Proxy(..))
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Data.Text.Read as T
@@ -61,7 +61,7 @@ instance Default MemcachedConfig where
     def = MemcachedConfig def Nothing
 
 initMemcached :: MonadBaseControl IO m => MemcachedConfig -> Initializer' m Memcached
-initMemcached cfg = initializerBracket' $ \m -> control $ \run -> 
+initMemcached cfg = initializerBracket' $ \m -> control $ \run ->
     Memcached.withConnection (connectInfo cfg) (\c -> run $ m (Memcached c cfg))
 
 getHerokuConfig :: T.Text -> MemcachedConfig -> Heroku -> MaybeT IO MemcachedConfig

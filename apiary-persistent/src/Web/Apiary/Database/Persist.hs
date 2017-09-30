@@ -35,10 +35,10 @@ import qualified Database.Persist.Sql as Sql
 import Web.Apiary(Html)
 import Control.Monad.Apiary.Action(ActionT, applyDict)
 import Control.Monad.Apiary.Filter(focus, Filter, Doc(DocPrecondition))
-import qualified Network.Routing.Dict as Dict
-import qualified Network.Routing as R
-import Data.Proxy.Compat(Proxy(..))
-import GHC.TypeLits.Compat(KnownSymbol)
+import qualified Data.Apiary.Routing.Dict as Dict
+import qualified Data.Apiary.Routing as R
+import Data.Proxy(Proxy(..))
+import GHC.TypeLits(KnownSymbol)
 import Data.Apiary.Extension
     (Has, Initializer, initializer, Extensions, Extension, MonadExts, getExt)
 
@@ -56,7 +56,7 @@ instance Extension Persist
 
 type With c m = forall a. (c -> m a) -> m a
 
-initPersist' :: (MonadIO n, MonadBaseControl IO n, Monad m) 
+initPersist' :: (MonadIO n, MonadBaseControl IO n, Monad m)
              => (forall a. Extensions exts -> n a -> m a)
              -> With Sql.SqlBackend n -> Migrator -> Initializer m exts (Persist ': exts)
 initPersist' run with migr = initializer $ \es -> run es $
@@ -66,17 +66,17 @@ initPersist' run with migr = initializer $ \es -> run es $
 
 -- | construct persist extension initializer with no connection pool.
 --
--- example: 
+-- example:
 --
 -- @
 -- initPersist (withSqliteConn "db.sqlite") migrateAll
 -- @
-initPersist :: (MonadIO m, MonadBaseControl IO m) 
+initPersist :: (MonadIO m, MonadBaseControl IO m)
             => With Sql.SqlBackend (LogWrapper exts m) -> Sql.Migration
             -> Initializer m exts (Persist ': exts)
 initPersist with = initPersist' runLogWrapper with . Logging
 
-initPersistNoLog :: (MonadIO m, MonadBaseControl IO m) 
+initPersistNoLog :: (MonadIO m, MonadBaseControl IO m)
                  => With Sql.SqlBackend (NoLoggingT m)
                  -> Sql.Migration -> Initializer m es (Persist ': es)
 initPersistNoLog with = initPersist' (const runNoLoggingT) with . Silent

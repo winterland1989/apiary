@@ -23,7 +23,7 @@ module Web.Apiary.Authenticate
 
 import Web.Apiary
 import qualified Web.Apiary.Authenticate.Internal as I
-import qualified Network.Routing.Dict as Dict
+import qualified Data.Apiary.Routing.Dict as Dict
 import qualified Network.HTTP.Client as Client
 import Network.HTTP.Client.TLS(tlsManagerSettings)
 import Web.Apiary.Session
@@ -34,7 +34,7 @@ import Control.Monad.Apiary.Filter(Filter)
 import qualified Data.Text as T
 import qualified Data.ByteString as S
 
-import GHC.TypeLits.Compat(KnownSymbol)
+import GHC.TypeLits(KnownSymbol)
 import Data.Apiary.Extension
 
 pOpenId :: Proxy I.OpenId
@@ -58,7 +58,7 @@ initAuth = initAuthWith tlsManagerSettings
 -- | default auth handlers. since 0.8.0.0.
 authHandler :: (Monad m, MonadIO actM, Has I.Auth exts, Has (Session I.OpenId actM) exts)
             => ApiaryT exts prms actM m ()
-authHandler = getExt (Proxy :: Proxy I.Auth) >>= I.authHandler 
+authHandler = getExt (Proxy :: Proxy I.Auth) >>= I.authHandler
 
 authorized' :: (Has (Session I.OpenId actM) exts, KnownSymbol key, Monad actM, key Dict.</ kvs)
             => proxy key
