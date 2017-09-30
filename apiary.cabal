@@ -91,7 +91,7 @@ library
                        Control.Monad.Apiary.Filter.Internal
                        Control.Monad.Apiary.Action.Internal
                        Control.Monad.Apiary.Filter.Internal.Capture.TH
-  build-depends:       base                 >=4.8   && <5.0
+  build-depends:       base                 >=4.7   && <5.0
                      , template-haskell     >=2.8   && <2.13
 
                      , transformers         >=0.2   && <0.6
