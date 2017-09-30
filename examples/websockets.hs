@@ -7,14 +7,14 @@ import Web.Apiary
 import Web.Apiary.WebSockets
 import Network.Wai.Handler.Warp
 import qualified Data.Text as T
-import Network.Routing.Dict(get)
+import Data.Apiary.Routing.Dict(get)
 import Control.Concurrent
 import Language.Haskell.TH
 import System.FilePath
 import System.Directory
 
 main :: IO ()
-main = do 
+main = do
     setCurrentDirectory $(location >>= stringE . takeDirectory . loc_filename)
     runApiary (run 3000) def $ do
         [capture|/i::Int|] . webSockets $ servApp . get [key|i|]
@@ -25,7 +25,7 @@ servApp st pc = do
     c <- acceptRequest pc
     go c st
   where
-    go c i 
+    go c i
         | i > 10 = sendClose c ("Close" :: T.Text)
         | otherwise = do
             sendTextData c (T.pack $ show i)
