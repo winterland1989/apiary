@@ -1,7 +1,9 @@
 #!/usr/bin/env bash -eu
 
-wget "http://download.newrelic.com/agent_sdk/nr_agent_sdk-v0.16.2.0-beta.x86_64.tar.gz"
+
 FILE="nr_agent_sdk-v0.16.2.0-beta.x86_64.tar.gz"
+rm -f FILE
+wget "http://download.newrelic.com/agent_sdk/nr_agent_sdk-v0.16.2.0-beta.x86_64.tar.gz"
 tar xvf $FILE
 NEWRELIC_BASE=`pwd`/${FILE%.tar.gz}
 export LD_LIBRARY_PATH=$NEWRELIC_BASE/lib
