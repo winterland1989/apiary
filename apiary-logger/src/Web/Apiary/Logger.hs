@@ -83,7 +83,7 @@ initLogger LogConfig{..} = initializerBracket' $ bracket
 logging :: (Has Logger es, MonadExts es m, MonadIO m) => FL.LogStr -> m ()
 logging m = getExt (Proxy :: Proxy Logger) >>= \l -> liftIO $ pushLog l m
 
-instance (Has Logger es, MonadExts es m, MonadIO m) => MonadLogger m where
+instance (Has Logger es, MonadExts es m, MonadIO m, Monad m) => MonadLogger m where
     monadLoggerLog loc src lv msg = logging $ defaultLogStr loc src lv (FL.toLogStr msg)
 
 -- | wrapper to use as MonadLogger using Logger Extenson.
