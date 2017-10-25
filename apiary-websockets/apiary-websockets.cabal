@@ -1,5 +1,5 @@
 name:                apiary-websockets
-version:             1.4.0
+version:             1.5.0
 synopsis:            websockets support for apiary web framework.
 description:
   example: <https://github.com/philopon/apiary/blob/master/examples/websockets.hs>

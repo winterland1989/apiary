@@ -1,5 +1,4 @@
 {-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE OverlappingInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TypeOperators #-}
@@ -127,7 +126,7 @@ sql :: (KnownSymbol k, Has Persist exts, MonadBaseControl IO actM, k Dict.</ prm
     -> proxy k
     -> Sql.SqlPersistT (ActionT exts '[] actM) a
     -> (a -> Maybe b) -- ^ result check function. Nothing: fail filter, Just a: success filter and add parameter.
-    -> Filter exts actM m prms (k Dict.:= b ': prms)
+    -> Filter exts actM m prms (k 'Dict.:= b ': prms)
 sql doc k q p = focus (maybe id DocPrecondition doc) Nothing $ R.raw "sql" $ \d t ->
     fmap p (runSql $ hoistReaderT (applyDict Dict.emptyDict) q) >>= \case
         Nothing -> mzero
