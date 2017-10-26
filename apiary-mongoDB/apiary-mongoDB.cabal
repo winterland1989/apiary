@@ -1,5 +1,5 @@
 name:                apiary-mongoDB
-version:             1.5.0
+version:             1.5.1
 synopsis:            mongoDB support for apiary web framework.
 -- description:
 license:             MIT
@@ -20,17 +20,17 @@ library
   other-modules:       
   build-depends:       base               >=4.7   && <5.0
                      , apiary             >=2.1   && <3.0
-                     , mongoDB            >=2.0   && <2.1
+                     , mongoDB            >=2.0   && <2.4
                      , resource-pool      >=0.2   && <0.3
-                     , data-default-class >=0.0   && <0.1
+                     , data-default-class >=0.0   && <0.2
                      , transformers       >=0.2   && <0.6
-                     , time               >=1.4   && <1.6
+                     , time               >=1.4   && <1.9
                      , lifted-base        >=0.2   && <0.3
                      , bson               >=0.3   && <0.4
                      , monad-control      >=0.3   && <1.1
                      , text               >=1.1   && <1.3
   hs-source-dirs:      src
-  ghc-options:         -O2 -Wall
+  ghc-options:         -Wall
   default-language:    Haskell2010
 
 source-repository head

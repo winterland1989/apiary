@@ -1,3 +1,6 @@
+# 2.1.1
+* Bump aeson and time version in dependencies.
+
 # 2.1.0
 * GHC 8.0/8.2 compatible
 * merge web-routing modules, `Network.Routing.XXX` changed to `Data.Apiary.Routing.XXX`.
