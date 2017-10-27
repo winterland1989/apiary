@@ -207,7 +207,9 @@ instance (Monad actM, MonadBase b m) => MonadBase b (ApiaryT exts prms actM m) w
 instance Monad actM => MonadTransControl (ApiaryT exts prms actM) where
 #if MIN_VERSION_monad_control(1,0,0)
     type StT (ApiaryT exts prms actM) a = (a, ApiaryWriter exts actM)
-    liftWith f = apiaryT $ \env -> liftM (\a -> (a, mempty)) (f $ \t -> unApiaryT t env (\a w -> return (a,w)))
+    liftWith f = apiaryT $ \env ->
+        liftM (\a -> (a, mempty :: ApiaryWriter exts actM)) -- GHC 8.0.1 can't figure it out
+        (f $ \t -> unApiaryT t env (\a w -> return (a,w)))
     restoreT = apiaryT . const
 #else
     newtype StT (ApiaryT exts prms actM) a = StTApiary { unStTApiary :: (a, ApiaryWriter exts actM) }
