@@ -1,3 +1,6 @@
+# 2.1.2
+* Fix GHC 8.0.2 build.
+
 # 2.1.1
 * Bump aeson and time version in dependencies.
 
